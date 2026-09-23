@@ -1,6 +1,10 @@
 # Documentation: Feedback Loop
 
-**Platform name:** Feedback Loop
+**Platform name:** Feedback Loop \
+**Author:** Stella Eva Tsiapali \
+**Supervisors:** Iro Ntonia; Zohaib Akhtar \
+**Institution:** Imperial College London  \
+**Year:** 2026
 
 **Technology:**
 
@@ -8,11 +12,6 @@
 - Django 5.2
 - SQLite, configured as the default database
 - Vanilla HTML, CSS and JavaScript
-
-**Author:** Stella Eva Tsiapali
-**Year:** 2026  
-**Institution:** Imperial College London  
-**Supervisors:** Iro Ntonia (Centre for Higher Education Research and Scholarship); Zohaib Akhtar (Department of Electrical and Electronic Engineering)
 
 
 ## 1. Overview
@@ -30,10 +29,10 @@ The current implementation provides a working foundation for:
 - Recording student identifiers, grades and marker feedback;
 - Grade moderation using linear scaling or z-score scaling;
 - Storage and display of improved feedback, moderated feedback and LLM-generated suggestions;
-- CSV export of assignment results;
+- CSV export of assignment results (e.g., for upload to VLE);
 - Temporary local username/password authentication.
 
-The LLM-related functions are currently placeholders, and server deployment/SSO authentication are to be implemented.
+The LLM-related functions are currently placeholders, while server deployment, SSO authentication and VLE integration are to be implemented.
 
 ## 2. Repository structure
 
@@ -41,9 +40,9 @@ The repository contains one Django project (`project`), containing a single appl
 
 ```text
 project/
-├── manage.py                         Django command-line entry point
-├── requirements.txt                  Python dependencies
-├── populate_platform.py              Example database population script
+├── manage.py                          Django command-line entry point
+├── requirements.txt                   Python dependencies
+├── populate_platform.py               Example database population script
 ├── app/
 │   ├── admin.py                       Django admin registrations
 │   ├── apps.py                        Django application configuration
