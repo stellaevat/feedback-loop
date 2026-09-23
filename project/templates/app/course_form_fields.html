@@ -1,0 +1,8 @@
+{% load app_template_tags %}
+
+{% for field in course_form %}
+    <div class="detail">
+        {{ field.help_text }} {{ field }} 
+        <span class="error-message">{{ field.errors|get_error_message }}</span>
+    </div>
+{% endfor %}

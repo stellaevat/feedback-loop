@@ -1,0 +1,11 @@
+<h2>
+    <a class="courses-dir" href="{% url 'app:my_courses' %}">My Courses</a>
+    <span class="courses-dir">/</span>
+    <a class="no-deco" href="{% url 'app:view_course' course.slug %}">
+        {% if course.name %}
+            {{ course.code }}: {{ course.name }}
+        {% else %}
+            {{ course.code }}
+        {% endif %}
+    </a>
+</h2>

@@ -1,0 +1,78 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_template_tags %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        {% include 'app/course_directory_title.html' %}
+    </div>
+
+    <div class="text-left-button-right">
+        <h3>
+            <a href="{% url 'app:view_assignment' course.slug assignment.pk %}">
+                {{ assignment.name }}
+            </a>
+        </h3>
+
+        <div class="double-button-left">
+            <button type="submit" form="submission-form" name="mark-submission" class="btn-apply" id="save-btn">
+                Save submission
+            </button>
+            <a href="{% url 'app:view_assignment' course.slug assignment.pk %}">
+                Discard
+            </a>
+        </div>
+    </div>
+
+
+    <form id="submission-form" method="post" action="
+        {% if submission %}
+            {% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}
+        {% else %}
+            {% url 'app:mark_new_submission' course.slug assignment.pk %}
+        {% endif %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h4>&#9654; Mark submission</h4>
+
+        {% for field in submission_form %}
+            {% if field.name != 'improved_marker_feedback' and field.name != 'suggested_improvements' %}
+                <div class="detail">
+                    {{ field.help_text }} {{ field }} 
+                    <span class="error-message">{{ field.errors|get_error_message }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <button type="submit" form="submission-form" name="check-feedback" id="check-feedback-btn">
+            Check feedback
+        </button>
+
+        {% if submission.suggested_improvements %}
+            <div class="detail" id="suggestion-area">
+                {{ submission_form.suggested_improvements.help_text }} 
+                {{ submission_form.suggested_improvements }}
+                <br />
+            </div>
+        {% endif %}
+
+        <div class="detail">
+            {{ submission_form.improved_marker_feedback.help_text }} 
+            {{ submission_form.improved_marker_feedback }}
+            <span class="error-message">{{ submission_form.improved_marker_feedback.errors|get_error_message }}</span>
+        </div>
+    </form>
+
+    {% if submission %}
+        <br /><br />
+        <div class="text-left-button-right">
+            <a href="{% url 'app:delete_submission' course.slug assignment.pk submission.pk %}">
+                <button type="button" name="delete-submission" class="btn-delete" onclick="return confirmSubmissionDeletion()">
+                    Delete marked submission
+                </button>
+            </a>
+        </div>
+    {% endif %}
+<script type="text/javascript" src="{% static 'scripts/app_form_handling.js' %}"></script>
+
+{% endblock %}

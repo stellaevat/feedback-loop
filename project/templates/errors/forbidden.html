@@ -1,0 +1,13 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block body_block %}
+    <h2 class="error-title">Oops, you don't have access to this.</h2><br />
+    
+    {% if custom_message %}
+        <p class="detail">{{ custom_message }}</p>
+    {% else %}
+        <p class="detail">It looks like you don't have permission to access this page.</p>
+    {% endif %}
+    <p class="detail">Please make sure you're using the right link, or start from the homepage.</p>
+{% endblock %}

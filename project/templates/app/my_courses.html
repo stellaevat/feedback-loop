@@ -1,0 +1,39 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        <h2 class="courses-dir">My Courses</h2>
+        
+        {% if is_course_lead %}
+            <a href="{% url 'app:new_course' %}">
+                <button type="button" class="btn-create">+ Create new course</button>
+            </a>
+        {% endif %}
+    </div>
+
+    {% if courses %}
+        <div class="card-row">
+            <ul>
+                {% for course, assignment_count in courses %}
+                    <li class="card">
+                        <a href="{% url 'app:view_course' course.slug %}">
+                            {% if course.name %}
+                                <h2>{{ course.code }}: {{ course.name }}</h2>
+                            {% else %}
+                                <h2>{{ course.code }}</h2>
+                            {% endif %}
+                        </a>
+                        <div class="card-content">
+                            {{ assignment_count }} assignment{{ assignment_count|pluralize:",s" }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <br />
+        <div class="detail"><i>You have no courses yet.</i></div>
+    {% endif %}
+    
+{% endblock %}

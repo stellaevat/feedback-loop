@@ -1,0 +1,16 @@
+{% load app_template_tags %}
+
+{% for field in assignment_form %}
+    <div class="detail">
+        {{ field.help_text }}
+        {% if field.name == 'spec' or field.name == 'rubric' %}
+            <div class="small-indent">
+                {{ field }}
+                <span class="error-message">{{ field.errors|get_error_message }}</span>
+            </div>
+        {% else %}
+            {{ field }}
+            <span class="error-message">{{ field.errors|get_error_message }}</span>
+        {% endif %}
+    </div>
+{% endfor %}

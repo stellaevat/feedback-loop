@@ -1,0 +1,25 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block body_block %}
+    {% if user.is_authenticated %}
+        <div class="card-row">
+            <ul>
+                <li class="card">
+                    <a href="{% url 'app:my_courses' %}"><h2>My Courses</h2></a>
+                    <div class="card-content">View and manage your courses.</div>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="card-row">
+            <ul>
+                <li class="card">
+                    <a href="{% url 'app:user_login' %}"><h2>Login</h2></a>
+                    <div class="card-content">Please log in to access your courses and assignments.</div>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		
+		<title>
+			Feedback Loop - Imperial College London
+		</title>
+		
+		<meta name="description" content="Provide, improve and monitor feedback for all of your courses at scale." />
+		
+		<!--Scripts-->
+		<script type="text/javascript" src="{% static 'scripts/app.js' %}"></script>
+
+		<!--Stylesheets-->
+		<link rel="stylesheet" href="{% static 'styles/app.css' %}" type="text/css" />
+		
+		<!--Fonts-->
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Extralight.woff2' %}" as="font" type="font/woff2" crossorigin="">
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Light.woff2' %}" as="font" type="font/woff2" crossorigin="">
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Regular.woff2' %}" as="font" type="font/woff2" crossorigin="">
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Medium.woff2' %}" as="font" type="font/woff2" crossorigin="">
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Semibold.woff2' %}" as="font" type="font/woff2" crossorigin="">
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Bold.woff2' %}" as="font" type="font/woff2" crossorigin="">
+		<link rel="preload" href="{% static 'fonts/imperial-sans/ImperialSansText-Extrabold.woff2' %}" as="font" type="font/woff2" crossorigin="">
+
+		<!--Favicon-->
+		<link rel="icon" type="image/svg+xml" href="{% static 'favicon/favicon.svg' %}">
+		<link rel="alternate icon" href="{% static 'favicon/favicon.ico' %}">
+		<link rel="icon" href="{% static 'favicon/favicon-32.png' %}" sizes="32x32">
+		<link rel="icon" href="{% static 'favicon/favicon-57.png' %}" sizes="57x57">
+		<link rel="icon" href="{% static 'favicon/favicon-76.png' %}" sizes="76x76">
+		<link rel="icon" href="{% static 'favicon/favicon-96.png' %}" sizes="96x96">
+		<link rel="icon" href="{% static 'favicon/favicon-128.png' %}" sizes="128x128">
+		<link rel="icon" href="{% static 'favicon/favicon-192.png' %}" sizes="192x192">
+		<link rel="icon" href="{% static 'favicon/favicon-228.png' %}" sizes="228x228">
+		<link rel="shortcut icon" href="{% static 'favicon/favicon-196.png' %}" sizes="196x196">
+		<link rel="apple-touch-icon" href="{% static 'favicon/favicon-120.png' %}" sizes="120x120">
+		<link rel="apple-touch-icon" href="{% static 'favicon/favicon-152.png' %}" sizes="152x152">
+		<link rel="apple-touch-icon" href="{% static 'favicon/favicon-180.png' %}" sizes="180x180">
+	</head>
+	
+	<body>
+		<div id="above-footer">
+			<div class="navbar-bg"></div>
+			<header>
+				<div class="navbar">
+					<div class="navbar-left">
+						<a href="{% url 'app:homepage' %}">
+							<img class="logo" id="home-logo"src="{% static 'img/logo_white.svg' %}" alt="Imperial College London homepage"/>
+						</a>
+					</div>
+					<div class="navbar-right">
+						{% if user.is_authenticated %}
+							<a href="{% url 'app:user_logout' %}">LOGOUT</a>
+						{% else %}
+							<a href="{% url 'app:user_login' %}">LOGIN</a>
+						{% endif %}
+					</div>
+				</div>
+				
+				<div id="main-title">
+					<h1>
+						<a class="no-deco" href="{% url 'app:homepage' %}">
+							{% if inf_logo %}
+								Feedback L<span id="inf">&infin;</span>p
+							{% else %}
+								{{ platform_name }}
+							{% endif %}
+						</a>
+					</h1>
+					<div class="subtitle">
+						Provide, improve, and moderate student feedback at scale.<br />
+					</div>
+				</div>
+			</header>
+			
+			<div class="main">
+				{% block body_block %}
+				{% endblock %}
+			</div>
+		</div>
+		
+		<footer>
+			<div class="footer-content">	
+				<div class="footer-left">
+					<img class="logo" id="footer-logo" src="{% static 'img/logo_white.svg' %}" alt="Imperial College London homepage"/>
+					<div class="contacts">
+						South Kensington Campus<br>
+						London SW7 2AZ, UK<br>
+						T: +44(0)20 7589 5111
+					</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

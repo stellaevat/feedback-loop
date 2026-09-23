@@ -1,0 +1,100 @@
+<div class="vertical-scroll">
+    <table id="submission-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                {% if is_course_lead %}
+                    <th>Marker</th>
+                {% endif %}
+                <th>Grade</th>
+                <th>Moderated</th>
+                <th>Feedback</th>
+                <th>Moderated</th>
+            </tr>
+            <tr>
+                <th></th>
+                {% if is_course_lead %}
+                    <th></th>
+                {% endif %}
+                <th></th>
+                <th>Grade</th>
+                <th></th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+
+        {% if submissions %}
+            {% for submission in submissions %}
+                <tr class="grey-box">
+                    <td>
+                        {{ submission.student_cid }}
+                        <a href="{% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}"></a>
+                    </td>
+                    {% if is_course_lead %}
+                        <td>
+                            {{ submission.marker.username }}
+                            <a href="{% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}"></a>
+                        </td>
+                    {% endif %}
+                    <td>
+                        {% if submission.marker_grade %}
+                            {{ submission.marker_grade }}
+                        {% else %}
+                            -
+                        {% endif %}
+                        <a href="{% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}"></a>
+                    </td>
+                    <td>
+                        {% if submission.moderated_grade %}
+                            {{ submission.moderated_grade }}
+                        {% else %}
+                            -
+                        {% endif %}
+                        <a href="{% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}"></a>
+                    </td>
+                    <td title=
+                        "{% if submission.improved_marker_feedback %}
+                            {{ submission.improved_marker_feedback }}
+                        {% elif submission.initial_marker_feedback %}
+                            {{ submission.initial_marker_feedback }}
+                        {% else %}
+                        {% endif %}">
+                        {% if submission.improved_marker_feedback %}
+                            {{ submission.improved_marker_feedback }}
+                        {% elif submission.initial_marker_feedback %}
+                            {{ submission.initial_marker_feedback }}
+                        {% else %}
+                            -
+                        {% endif %}
+                        <a href="{% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}"></a>
+                    </td>
+                    <td  title=
+                        "{% if submission.moderated_feedback %}
+                            {{ submission.moderated_feedback }}
+                        {% else %}
+                        {% endif %}">
+                        {% if submission.moderated_feedback %}
+                            {{ submission.moderated_feedback }}
+                        {% else %}
+                            -
+                        {% endif %}
+                        <a href="{% url 'app:mark_existing_submission' course.slug assignment.pk submission.pk %}"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr class="grey-box-fixed">
+                <td id="empty-table-entry">
+                    <i>No submissions to display.</i>
+                </td>
+                {% if is_course_lead %}
+                    <td></td>
+                {% endif %}
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endif %}
+    </table>
+</div>

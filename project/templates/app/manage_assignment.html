@@ -1,0 +1,113 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_template_tags %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        {% include 'app/course_directory_title.html' %}
+
+        <a href="{% url 'app:view_assignment' course.slug assignment.pk %}">
+            <button type="button" class="btn-manage" id="return-btn">Return to assignment</button>
+        </a>
+    </div>
+    <div class="text-left-button-right">
+        <h3>
+            <a href="{% url 'app:view_assignment' course.slug assignment.pk %}">
+                {{ assignment.name }}
+            </a>
+        </h3>
+    </div>
+
+    <form id="assignment-form" method="post" action="{% url 'app:manage_assignment' course.slug assignment.pk %}" enctype="multipart/form-data">
+		{% csrf_token %}
+
+        <div class="text-left-button-right">
+            <h4>&#9654; Edit details</h4>
+            <button type="submit" form="assignment-form" name="edit-assignment" class="btn-apply" id="save-btn">
+                Save details
+            </button>
+        </div>
+
+        {% include 'app/assignment_form_fields.html' %}
+    </form>
+    <br /><br />
+
+    <h4>&#9654; Moderate</h4>
+
+    <form id="grade-form" method="post" action="{% url 'app:manage_assignment' course.slug assignment.pk %}" enctype="multipart/form-data">
+		{% csrf_token %}
+        <div class="text-left-button-right">
+            <div class="detail">
+                {{ grade_form.grade_moderation.help_text }}
+                <div class="small-indent">
+                    {{ grade_form.grade_moderation }}
+                    <span class="error-message">{{ grade_form.grade_moderation.errors|get_error_message }}</span>
+                </div>
+                <br />
+                <div class="small-indent">
+                    {{ grade_form.grade_moderation_param_1.help_text }}
+                    {{ grade_form.grade_moderation_param_1 }}
+                </div>
+                <div class="small-indent">
+                    {{ grade_form.grade_moderation_param_2.help_text }}
+                    {{ grade_form.grade_moderation_param_2 }}
+                </div>
+            </div>
+            <button type="submit" form="grade-form" name="grade-moderation" class="btn-apply">Apply grade moderation</button>
+        </div>
+
+    </form>
+
+    <form id="feedback-form" method="post" action="{% url 'app:manage_assignment' course.slug assignment.pk %}" enctype="multipart/form-data">
+		{% csrf_token %}
+        <div class="text-left-button-right">
+            <div class="detail">
+                <p>Feedback moderation:</p>
+                <div class="small-indent">
+                    {{ feedback_form.feedback_tone.help_text }}
+                    {{ feedback_form.feedback_tone }}
+                    <span class="error-message">{{ feedback_form.feedback_tone.errors|get_error_message }}</span>
+                </div>
+                <br />
+                <div class="small-indent">
+                    Feedback length (in words): {{ feedback_form.feedback_length_min }} - {{ feedback_form.feedback_length_max }}
+                    <span class="error-message">{{ feedback_form.feedback_length_min_max_errors|get_error_message }}</span>
+                </div>
+                <br />
+                <div class="small-indent">
+                    {{ feedback_form.feedback_moderation_requests.help_text }}
+                    <br /><br />
+                    {{ feedback_form.feedback_moderation_requests }}
+                    <br />
+                    <span class="error-message">{{ feedback_form.feedback_moderation_requests.errors|get_error_message }}</span>
+                </div>
+            </div>
+            <button type="submit" form="feedback-form" name="feedback-moderation" class="btn-apply">
+                Apply feedback moderation
+            </button>
+        </div>
+    </form>
+    <br />
+
+	<div class="detail">
+        {% if submissions %}
+            <b>Marked submissions</b> (<a href="{% url 'app:export_csv' course.slug assignment.pk %}">CSV file</a>):
+        {% else %}
+            <b>Marked submissions:</b>
+        {% endif %}
+    </div>
+	
+	{% include 'app/marked_submission_table.html' %}
+
+    <br /><br />
+    <div class="text-left-button-right">
+        <a href="{% url 'app:delete_assignment' course.slug assignment.pk %}">
+            <button type="button" name="delete-assignment" class="btn-delete" onclick="return confirmAssignmentDeletion()">
+                Delete assignment
+            </button>
+        </a>
+    </div>
+
+<script type="text/javascript" src="{% static 'scripts/app_form_handling.js' %}"></script>
+
+{% endblock %}

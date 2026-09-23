@@ -1,0 +1,38 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_template_tags %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        {% include 'app/course_directory_title.html' %}
+        
+        <a href="{% url 'app:view_course' course.slug %}">
+            <button type="button" class="btn-manage" id="return-btn">Return to course</button>
+        </a>
+    </div>
+
+    <form id="course-form" method="post" action="{% url 'app:manage_course' course.slug %}" enctype="multipart/form-data">
+		{% csrf_token %}
+
+        <div class="text-left-button-right">
+            <h4>&#9654; Edit details</h4>
+            <button type="submit" form="course-form" name="edit-course" class="btn-apply" id="save-btn">
+                Save details
+            </button>
+        </div>
+
+        {% include 'app/course_form_fields.html' %}
+    </form>
+
+    <br /><br />
+    <div class="text-left-button-right">
+        <a href="{% url 'app:delete_course' course.slug %}">
+            <button type="button" name="delete-course" class="btn-delete" onclick="return confirmCourseDeletion()">
+                Delete course
+            </button>
+        </a>
+    </div>
+
+<script type="text/javascript" src="{% static 'scripts/app_form_handling.js' %}"></script>
+    
+{% endblock %}

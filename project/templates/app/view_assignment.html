@@ -1,0 +1,72 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        {% include 'app/course_directory_title.html' %}
+        
+        {% if is_course_lead %}
+            <div class="double-button-left">
+                <a href="{% url 'app:manage_assignment' course.slug assignment.pk %}">
+                    <button type="button" class="btn-manage">Manage assignment</button>
+                </a>
+                <a href="{% url 'app:mark_new_submission' course.slug assignment.pk %}">
+                    <button type="button" class="btn-apply">+ Mark submission</button>
+                </a>
+            </div>
+        {% else %}
+            <a href="{% url 'app:mark_new_submission' course.slug assignment.pk %}">
+                <button type="button" class="btn-apply">+ Mark new submission</button>
+            </a>
+        {% endif %}
+        
+    </div>
+
+    <h3>{{ assignment.name }}</h3>
+
+    <div class="detail">
+        <b>Specification: </b>
+        {% if assignment.spec %}
+            <a href="{{ assignment.spec.url }}">Download</a>
+        {% else %}
+            <i>Not available</i>
+        {% endif %}
+    </div>
+
+    <div class="detail">
+        <b>Rubric: </b>
+        {% if assignment.rubric %}
+            <a href="{{ assignment.rubric.url }}">Download</a>
+        {% else %}
+            <i>Not available</i>
+        {% endif %}
+    </div>
+
+    {% if is_course_lead %}
+        <div class="detail">
+            <b>Markers assigned:</b>
+            {% if assignment.markers.all %}
+                <select>
+                    <optgroup disabled>
+                        {% for marker in assignment.markers.all %}
+                            <option>{{ marker.username }}</option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+            {% else %}
+                <i>Not assigned</i>
+            {% endif %}
+        </div>
+    {% endif %}
+    <br />
+
+	<div class="detail">
+        {% if submissions %}
+            <b>Marked submissions</b> (<a href="{% url 'app:export_csv' course.slug assignment.pk %}">CSV file</a>):
+        {% else %}
+            <b>Marked submissions:</b>
+        {% endif %}
+    </div>
+	
+	{% include 'app/marked_submission_table.html' %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_template_tags %}
+
+{% block body_block %}
+    {% include 'app/course_directory_title.html' %}
+
+    <div class="text-left-button-right">
+        <h3>Create new assignment</h3>
+
+        <div class="double-button-left">
+            <button type="submit" form="assignment-form" name="add-assignment" class="btn-apply" id="save-btn">
+                Save assignment
+            </button>
+            <a href="{% url 'app:view_course' course.slug %}">
+                Discard
+            </a>
+        </div>
+    </div>
+
+    <form id="assignment-form" method="post" action="{% url 'app:new_assignment' course.slug %}" enctype="multipart/form-data">
+		{% csrf_token %}
+
+        <h4>&#9654; Add details</h4>
+
+        {% include 'app/assignment_form_fields.html' %}
+    </form>
+
+<script type="text/javascript" src="{% static 'scripts/app_form_handling.js' %}"></script>
+
+{% endblock %}

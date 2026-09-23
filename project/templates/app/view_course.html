@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        <h2>
+            <a class="courses-dir" href="{% url 'app:my_courses' %}">My Courses</a>
+            <span class="courses-dir">/</span>
+            {% if course.name %}
+                {{ course.code }}: {{ course.name }}
+            {% else %}
+                {{ course.code }}
+            {% endif %}
+        </h2>
+        
+        {% if is_course_lead %}
+            <div class="double-button-left">
+                <a href="{% url 'app:manage_course' course.slug %}">
+                    <button type="button" class="btn-manage">Manage course</button>
+                </a>
+                <a href="{% url 'app:new_assignment' course.slug %}">
+                    <button type="button" class="btn-create" id="new-assign-btn">+ Create new assignment</button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if assignments %}
+        <div class="card-row">
+            <ul>
+                {% for assignment, submission_count in assignments %}
+                    <li class="card">
+                        <a href="{% url 'app:view_assignment' course.slug assignment.pk %}"><h2>{{ course.code }} - {{ assignment.name }}</h2></a>
+                        <div class="card-content">{{ submission_count }} marked submission{{ submission_count|pluralize:",s" }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="detail"><i>This course has no assignments yet.</i></div>
+    {% endif %}
+    
+{% endblock %}

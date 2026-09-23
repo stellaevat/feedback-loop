@@ -1,0 +1,30 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_template_tags %}
+
+{% block body_block %}
+    <div class="text-left-button-right">
+        <h2>
+            <a class="courses-dir" href="{% url 'app:my_courses' %}">My Courses</a>
+            <span class="courses-dir">/</span> 
+            Create new course
+        </h2>
+        
+        <div class="double-button-left">
+            <button type="submit" form="course-form" class="btn-apply" id="save-btn">Save course</button>
+            <a href="{% url 'app:my_courses' %}">Discard</a>
+        </div>
+    </div>
+
+    <form id="course-form" method="post" action="{% url 'app:new_course' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+
+        <h4>&#9654; Add details</h4>
+
+        {% include 'app/course_form_fields.html' %}
+    </form>
+    <br /><br />
+
+<script type="text/javascript" src="{% static 'scripts/app_form_handling.js' %}"></script>
+    
+{% endblock %}
