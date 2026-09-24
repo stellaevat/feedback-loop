@@ -8,9 +8,23 @@ from app.models import Course, Assignment, MarkedSubmission
 
 
 class CourseForm(forms.ModelForm):
-    code = forms.CharField(max_length=10, help_text=mark_safe('<b>Course code: </b>'), widget=TextInput(attrs={'placeholder': 'Enter course code'}))
-    name = forms.CharField(required=False, max_length=100, help_text=mark_safe('<b>Course name: </b>'), widget=TextInput(attrs={'placeholder': 'Enter course name'}))
-    markers = forms.ModelMultipleChoiceField(required=False, help_text=mark_safe('<b>Markers: </b>'), queryset=User.objects.filter(userprofile__is_marker=True), widget=SelectMultiple(attrs={'size':'1'}))
+    code = forms.CharField(
+        max_length=10, 
+        help_text=mark_safe('<b>Course code: </b>'), 
+        widget=TextInput(attrs={'placeholder': 'Enter course code'})
+    )
+    name = forms.CharField(
+        required=False, 
+        max_length=100, 
+        help_text=mark_safe('<b>Course name: </b>'), 
+        widget=TextInput(attrs={'placeholder': 'Enter course name'})
+    )
+    markers = forms.ModelMultipleChoiceField(
+        required=False, 
+        help_text=mark_safe('<b>Markers: </b>'), 
+        queryset=User.objects.filter(userprofile__is_marker=True), 
+        widget=SelectMultiple(attrs={'size':'1'}) # Dropdown rather than fully displayed list
+    )
 
     class Meta:
         model = Course
@@ -55,7 +69,7 @@ class AssignmentForm(forms.ModelForm):
         required=False, 
         help_text=mark_safe('<b>Markers assigned: </b>'), 
         queryset=User.objects.filter(userprofile__is_marker=True), 
-        widget=SelectMultiple(attrs={"size":'1'})
+        widget=SelectMultiple(attrs={"size":'1'})  # Dropdown rather than fully displayed list
     )
 
     class Meta:

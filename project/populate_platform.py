@@ -41,8 +41,6 @@ def add_course(code, name, course_lead_username, marker_usernames=[]):
         marker = User.objects.get(username=username)
         course.markers.add(marker)
 
-    course.save()
-
     return course
 
 def add_assignment(name, course_code, marker_usernames=[], spec=None):
@@ -60,7 +58,6 @@ def add_assignment(name, course_code, marker_usernames=[], spec=None):
         marker = User.objects.get(username=username)
         assignment.markers.add(marker)
 
-    assignment.save()
     return assignment
 
 def add_marked_submission(assignment_name, student_cid, marker_username, marker_grade=None, initial_marker_feedback=None, improved_marker_feedback=None):

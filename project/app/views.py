@@ -36,7 +36,9 @@ def generate_suggested_improvements(submission):
     return "You should consider..."
 
 
+# --------------------------------------------------------------
 # Views
+# --------------------------------------------------------------
 
 def homepage(request):
     context_dict = {'platform_name': PLATFORM_NAME, 'inf_logo': INF_SYMBOL_IN_LOGO}
@@ -161,7 +163,9 @@ def export_csv(request, course_slug, assignment_id):
     return response
 
 
-# For leads
+# --------------------------------------------------------------
+# Only for course leads
+# --------------------------------------------------------------
 
 @login_required
 def new_course(request):
@@ -176,6 +180,7 @@ def new_course(request):
             course = course_form.save(commit=False)
             course.course_lead = request.user
             course.save()
+            course.markers.add(*course_form.cleaned_data.get('markers'))
             return redirect(reverse('app:view_course', kwargs={'course_slug': course.slug}))
         else:
             print(course_form.errors)
@@ -314,7 +319,9 @@ def delete_assignment(request, course_slug, assignment_id):
     return redirect(reverse('app:view_course', kwargs={'course_slug': course.slug}))
 
 
-# For markers
+# --------------------------------------------------------------
+# Only for course leads and assigned markers
+# --------------------------------------------------------------
 
 @login_required
 def mark_submission(request, course_slug, assignment_id, submission_id=None):
@@ -401,7 +408,9 @@ def delete_submission(request, course_slug, assignment_id, submission_id):
     }))
 
 
+# --------------------------------------------------------------
 # Temporary local user authentication
+# --------------------------------------------------------------
 
 def user_login(request):
     context_dict = {'platform_name': PLATFORM_NAME, 'inf_logo': INF_SYMBOL_IN_LOGO}
@@ -435,7 +444,9 @@ def user_logout(request):
     return redirect(reverse('app:homepage'))
 
 
-# Error pages
+# --------------------------------------------------------------
+# Custom error pages
+# --------------------------------------------------------------
 
 def page_not_found(request, exception):
     context_dict = {'platform_name': PLATFORM_NAME, 'inf_logo': INF_SYMBOL_IN_LOGO}
