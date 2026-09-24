@@ -81,51 +81,53 @@ The current application uses function-based views and Django’s built-in authen
 
 ## 4. Getting started
 
-1. **Create a virtual environment**, from the `project/` directory:
+From the `project/` directory:
+
+1. Create a virtual environment:
 
    ```bash
    python -m venv .venv
    ```
 
-   **Activate it on macOS/Linux:**
+   Activate it on macOS/Linux:
 
    ```bash
    source .venv/bin/activate
    ```
 
-   **Activate it on Windows PowerShell:**
+   Activate it on Windows:
 
    ```powershell
-   .venv\Scripts\Activate.ps1
+   .venv\Scripts\activate.bat
    ```
 
-2. **Install dependencies:**
+2. Install dependencies:
 
    ```bash
    python -m pip install --upgrade pip
    pip install -r requirements.txt
    ```
 
-3. **Run database migrations:**
+3. Run database migrations:
 
    ```bash
    python manage.py makemigrations app
    python manage.py migrate
    ```
 
-4. **Create an administrator**, if required, for example for development or maintenance:
+4. Create an administrator, if required, for example for development or maintenance:
 
    ```bash
    python manage.py createsuperuser
    ```
 
-5. **Optionally populate development data:**
+5. Optionally populate development data:
 
    ```bash
    python populate_platform.py
    ```
 
-6. **Start the development server:**
+6. Start the development server:
 
    ```bash
    python manage.py runserver
