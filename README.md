@@ -109,6 +109,7 @@ The current application uses function-based views and Django’s built-in authen
 3. **Run database migrations:**
 
    ```bash
+   python manage.py makemigrations app
    python manage.py migrate
    ```
 
@@ -394,6 +395,7 @@ Before deployment:
 - CSV export permissions and contents;
 - Authentication and SSO callback behaviour;
 - LLM prompt generation using representative pedagogical scenarios.
+
 
 Run the Django checks and tests with:
 

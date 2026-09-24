@@ -139,10 +139,25 @@ def export_csv(request, course_slug, assignment_id):
     )
     writer = csv.writer(response)
 
-    writer.writerow(['Student ID', 'Marker', 'Marker_Grade', 'Moderated_Grade', 'Initial_Marker_Feedback', 'Improved_Marker_Feedback', 'Moderated Feedback'])
+    writer.writerow([
+        'Student ID', 
+        'Marker', 
+        'Marker_Grade', 
+        'Moderated_Grade', 
+        'Initial_Marker_Feedback', 
+        'Improved_Marker_Feedback', 
+        'Moderated Feedback'
+    ])
     for s in submissions:
-        writer.writerow([s.student_cid, s.marker, s.marker_grade, s.moderated_grade, s.initial_marker_feedback, s.improved_marker_feedback, s.moderated_feedback])
-
+        writer.writerow([
+            s.student_cid, 
+            s.marker, 
+            s.marker_grade, 
+            s.moderated_grade, 
+            s.initial_marker_feedback, 
+            s.improved_marker_feedback, 
+            s.moderated_feedback
+        ])
     return response
 
 
@@ -217,7 +232,10 @@ def new_assignment(request, course_slug):
         assignment_form = AssignmentForm(request.POST, request.FILES, course=course)
         if assignment_form.is_valid():
             assignment = assignment_form.save()
-            return redirect(reverse('app:view_assignment', kwargs={'course_slug': course.slug, 'assignment_id': assignment.pk}))
+            return redirect(reverse('app:view_assignment', kwargs={
+                'course_slug': course.slug, 
+                'assignment_id': assignment.pk
+            }))
         else:
             print(assignment_form.errors)
     else:
@@ -250,7 +268,12 @@ def manage_assignment(request, course_slug, assignment_id):
     
     if request.method == 'POST':
         if 'edit-assignment' in request.POST:
-            assignment_form = AssignmentForm(request.POST, request.FILES, instance=assignment, course=course, assignment=assignment)
+            assignment_form = AssignmentForm(
+                request.POST, request.FILES, 
+                instance=assignment, 
+                course=course, 
+                assignment=assignment
+            )
             form = assignment_form
         elif 'grade-moderation' in request.POST:
             grade_form = GradeModerationForm(request.POST, instance=assignment, assignment=assignment)
@@ -262,7 +285,10 @@ def manage_assignment(request, course_slug, assignment_id):
         if form.is_valid():
             form.save()
             if 'edit-assignment' in request.POST:    
-                return redirect(reverse('app:view_assignment', kwargs={'course_slug': course.slug, 'assignment_id': assignment.pk}))
+                return redirect(reverse('app:view_assignment', kwargs={
+                    'course_slug': course.slug, 
+                    'assignment_id': assignment.pk
+                }))
             elif 'grade-moderation' in request.POST:
                 apply_grade_moderation(assignment)
             elif 'feedback-moderation' in request.POST:
@@ -308,15 +334,26 @@ def mark_submission(request, course_slug, assignment_id, submission_id=None):
         original_submission = None
 
     if request.method == 'POST':
-        submission_form = MarkedSubmissionForm(request.POST, instance=original_submission, submission=original_submission, assignment=assignment, marker=request.user)
+        submission_form = MarkedSubmissionForm(
+            request.POST, 
+            instance=original_submission, 
+            submission=original_submission, 
+            assignment=assignment, 
+            marker=request.user
+        )
         if submission_form.is_valid():
             submission = submission_form.save()
+
+            # Clear moderated grade if original grade has just been removed
             if submission.marker_grade is None:
                 submission.moderated_grade = None
                 submission.save()
 
             if 'mark-submission' in request.POST:
-                return redirect(reverse('app:view_assignment', kwargs={'course_slug': course.slug, 'assignment_id': assignment.pk}))
+                return redirect(reverse('app:view_assignment', kwargs={
+                    'course_slug': course.slug, 
+                    'assignment_id': assignment.pk
+                }))
 
             elif 'check-feedback' in request.POST:
                 suggested_improvements = generate_suggested_improvements(submission)
@@ -330,7 +367,11 @@ def mark_submission(request, course_slug, assignment_id, submission_id=None):
         else:
             print(submission_form.errors)
     else:
-        submission_form = MarkedSubmissionForm(submission=original_submission, assignment=assignment, marker=request.user)
+        submission_form = MarkedSubmissionForm(
+            submission=original_submission, 
+            assignment=assignment, 
+            marker=request.user
+        )
 
     context_dict['course'] = course
     context_dict['assignment'] = assignment
@@ -354,7 +395,10 @@ def delete_submission(request, course_slug, assignment_id, submission_id):
         raise CustomMessagePermissionDenied(only_leads_and_sub_markers_msg)
     
     submission.delete()
-    return redirect(reverse('app:view_assignment', kwargs={'course_slug': course.slug, 'assignment_id': assignment.pk}))
+    return redirect(reverse('app:view_assignment', kwargs={
+        'course_slug': course.slug, 
+        'assignment_id': assignment.pk
+    }))
 
 
 # Temporary local user authentication
